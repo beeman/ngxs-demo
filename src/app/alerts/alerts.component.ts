@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core'
 import { Select, Store } from '@ngxs/store'
-import { AlertDismiss } from '../state/alert.state'
+import { Observable } from 'rxjs/Observable'
+import { AlertDismiss, AlertPayload, AlertState } from '../state/alert.state'
 
 @Component({
   selector: 'app-alerts',
@@ -12,21 +13,20 @@ import { AlertDismiss } from '../state/alert.state'
       </div>
     </div>
   `,
-  styles: [`
+  styles: [
+    `
     a {
       cursor: pointer;
     }
-  `]
+  `,
+  ],
 })
-export class AlertsComponent implements OnInit {
-  @Select('alerts') public alerts$;
+export class AlertsComponent {
+  @Select(AlertState) public alerts$: Observable<AlertPayload>
 
-  constructor(private store: Store) { }
-
-  ngOnInit() {}
+  constructor(private store: Store) {}
 
   dismiss(alert) {
-    this.store.dispatch(new AlertDismiss(alert));
+    this.store.dispatch(new AlertDismiss(alert))
   }
-
 }
